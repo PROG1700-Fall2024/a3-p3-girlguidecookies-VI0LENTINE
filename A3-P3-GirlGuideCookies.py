@@ -16,14 +16,17 @@ def guideInput():
     for num in numOfGuides:
         if not num.isnumeric():
             validNumber = False
+        elif "-, +, ." in num:
+            validNumber = False
     if validNumber == False:
-        print("\nPlease enter a number instead. Try again.\n")
+        print("\nPlease enter a valid, whole number of guides (no +, -, .). Try again.\n")
         main()
+
     return numOfGuides
 
 def guidesLoop(numOfGuides):
-    guideNames = []        
-    boxCount = []
+    guideNames = [] 
+    boxCount = []       
     guideCount = int(numOfGuides)
     validName = True
     for i in range(guideCount):
@@ -39,8 +42,20 @@ def guidesLoop(numOfGuides):
         if validName == False:
             print("\nPlease enter a valid name (letters only). Try again.\n")
             main()
-        boxes = int(input(f"Enter the number of boxes sold by {guideNames[i]}: "))
-        boxCount.append(boxes)
+
+        validBoxes = True
+        boxes = input(f"Enter the number of boxes sold by {guideNames[i]}: ")
+        boxCount.append(int(boxes))
+        for num in boxes:
+            if num.isalpha():
+                validBoxes = False
+                break
+            if "-" in num or "+" in num or "." in num:
+                validBoxes = False
+                break
+        if validBoxes == False:
+            print("\nPlease enter a valid, whole number of boxes (no +, -, .). Try again.\n")
+            main()
     
     return guideNames, boxCount
 
@@ -67,9 +82,9 @@ def winner(guideNames, boxCount, avgBoxes):
 def main():
     numOfGuides = guideInput()
     guideCount = int(numOfGuides)
-    guideNames, boxCounts = guidesLoop(numOfGuides)
-    avgBoxes = avg(boxCounts, guideCount)
-    winner(guideNames, boxCounts, avgBoxes)
+    guideNames, boxCount = guidesLoop(numOfGuides)
+    avgBoxes = avg(boxCount, guideCount)
+    winner(guideNames, boxCount, avgBoxes)
     # YOUR CODE ENDS HERE
 
 main()
