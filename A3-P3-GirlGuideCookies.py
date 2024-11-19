@@ -10,16 +10,38 @@
 
     # YOUR CODE STARTS HERE, each line must be indented (one tab)
 def guideInput():
-    return int(input("Enter the number of guides selling cookies: "))
+    numOfGuides = []
+    numOfGuides = input("Enter the number of guides selling cookies: ")
+    validNumber = True
+    for num in numOfGuides:
+        if not num.isnumeric():
+            validNumber = False
+    if validNumber == False:
+        print("\nPlease enter a number instead. Try again.\n")
+        main()
+    return numOfGuides
 
-def guidesLoop(guideCount):
+def guidesLoop(numOfGuides):
     guideNames = []        
     boxCount = []
+    guideCount = int(numOfGuides)
+    validName = True
     for i in range(guideCount):
         name = input(f"\nEnter the name of guide #{i + 1}: ")
         guideNames.append(name)
+        for char in name:
+            if char.isnumeric():
+                validName = False
+                break
+            elif char.lower() not in "abcdefghijklmnopqrstuvwxyz":
+                validName = False
+                break
+        if validName == False:
+            print("\nPlease enter a valid name (letters only). Try again.\n")
+            main()
         boxes = int(input(f"Enter the number of boxes sold by {guideNames[i]}: "))
         boxCount.append(boxes)
+    
     return guideNames, boxCount
 
 def avg(boxCount, guideCount):
@@ -43,8 +65,9 @@ def winner(guideNames, boxCount, avgBoxes):
             print(f"{guideNames[i]:<16} - {prize[3]}")
 
 def main():
-    guideCount = guideInput()
-    guideNames, boxCounts = guidesLoop(guideCount)
+    numOfGuides = guideInput()
+    guideCount = int(numOfGuides)
+    guideNames, boxCounts = guidesLoop(numOfGuides)
     avgBoxes = avg(boxCounts, guideCount)
     winner(guideNames, boxCounts, avgBoxes)
     # YOUR CODE ENDS HERE
